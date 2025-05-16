@@ -9,6 +9,9 @@ Intended for kernel driver testing, red team R\&D, and lab automation.
 
 ---
 
+![Demo](demo.gif)
+
+
 ## 👥 System Roles
 
 | Role     | Description                                                  |
