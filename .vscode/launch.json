@@ -1,0 +1,21 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Debug deploy-to-debuggee.ps1",
+        "type": "PowerShell",
+        "request": "launch",
+        "script": "${workspaceFolder}/deploy-to-debuggee.ps1",
+        "args": [
+          "-remoteHost", "192.168.232.129",
+          "-serviceName", "Tyrootkit",
+          "-remoteDir", "C:\\Users\\yonathan_malay\\Desktop\\run",
+          "-buildDir","D:\\Tyrootkit\\x64\\Debug",
+          "-username", "yonathan_malay",
+          "-password", "1"
+        ],
+        "cwd": "${workspaceFolder}",
+      }
+    ]
+  }
+  
