@@ -108,7 +108,8 @@ To fetch the latest version of the submodule later:
 
 ```cmd
 cd deployment/shared
-git pull origin main
+git fetch origin main
+git reset --hard origin/main
 cd ../..
 git add deployment/shared
 git commit -m "Update deployment scripts"
