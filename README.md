@@ -40,7 +40,9 @@ This script is triggered **post-build** from Visual Studio on the debugger machi
 | -------------- | ------------------------------------------------- |
 | `-remoteHost`  | IP/hostname of the debugee                        |
 | `-serviceName` | Name of the driver service                        |
-| `-remoteDir`   | Target path on the debugee for placing the driver |
+| `-remoteDir`   | Target folder path on the debugee for placing the |
+|                  driver .sys and .pdb (must be valid path)         |
+|                                                                    |
 | `-username`    | Username to authenticate to the remote machine    |
 | `-password`    | Password for the remote account (plain text)      |
 
@@ -53,7 +55,7 @@ powershell.exe -ExecutionPolicy Bypass -File "D:\Path\To\deploy-to-debugge.ps1" 
 ---
 
 ### ✅ 2. `prepare-debugee.ps1` (👥 Debugee-side)
-
+Firstly, you need to run the prepare-debugee.ps1 script on the debuggee machine.
 This script should be run **once on the debugee machine** to prepare it for receiving the driver over WinRM.
 
 **What it does:**
@@ -88,7 +90,7 @@ ProjectRoot/
 
 ---
 
-## 🔗 Integrating as a Git Submodule
+## Integrating as a Git Submodule
 
 If you'd like to reuse these scripts across multiple projects, you can include them via Git submodules.
 
@@ -106,24 +108,28 @@ This will clone the deployment scripts into the `deployment/shared` directory of
 
 To fetch the latest version of the submodule later:
 
+from the root dir of your git repo:
+```bash
+git submodule update --remote --merge --recursive
+```
+
+Alternatively, you can run this from the root of your main repo:
+
 ```cmd
 cd deployment/shared
-git pull origin main
+git fetch origin main
+git reset --hard origin/main
 cd ../..
 git add deployment/shared
 git commit -m "Update deployment scripts"
 ```
 
-Alternatively, you can run this from the root of your main repo:
-
-```bash
-git submodule update --remote --merge --recursive
-```
-
-### ⚙ Post-Build Integration
+### ⚙ Visual Studio Post-Build Integration
 
 After adding the submodule, you can use the following post-build event in Visual Studio:
 
+1. Go to your project properties
+2. add the following post build event command:
 ```cmd
 powershell -ExecutionPolicy Bypass -File "$(SolutionDir)deployment\shared\deploy-to-debuggee.ps1" -username "youruser" -password "yourpass" -remoteHost "192.168.0.10" -serviceName "$(ProjectName)" -remoteDir "C:\RemotePath" -buildDir $(TargetDir)
 ```
@@ -131,9 +137,7 @@ powershell -ExecutionPolicy Bypass -File "$(SolutionDir)deployment\shared\deploy
 ---
 
 
-
-
-## 🔐 Security Notice
+## Security Notice
 
 These scripts:
 
@@ -144,12 +148,6 @@ These scripts:
 
 ⚠ These settings are **insecure** in production environments.
 Use only in **isolated labs or VM-based test networks**.
-
-For production:
-
-* Use HTTPS and certificates
-* Avoid wildcard TrustedHosts
-* Use domain authentication
 
 ---
 
